@@ -4,7 +4,7 @@
 PlayerSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 28
-  productGUID: 9b61b66445ef6f44f933e0177d6f46d6
+  productGUID: f402aa7157aa4eb49a391f6ae814061b
   AndroidProfiler: 0
   AndroidFilterTouchesWhenObscured: 0
   AndroidEnableSustainedPerformanceMode: 0
@@ -13,7 +13,7 @@ PlayerSettings:
   useOnDemandResources: 0
   accelerometerFrequency: 60
   companyName: DefaultCompany
-  productName: Tutorial Terminator
+  productName: test_game
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 1}
@@ -596,14 +596,14 @@ PlayerSettings:
   editorAssembliesCompatibilityLevel: 1
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
-  metroPackageName: Tutorial Terminator
+  metroPackageName: test_game
   metroPackageVersion: 
   metroCertificatePath: 
   metroCertificatePassword: 
   metroCertificateSubject: 
   metroCertificateIssuer: 
   metroCertificateNotAfter: 0000000000000000
-  metroApplicationDescription: Tutorial Terminator
+  metroApplicationDescription: test_game
   wsaImages: {}
   metroTileShortName: 
   metroTileShowName: 0
@@ -672,13 +672,13 @@ PlayerSettings:
   qnxGraphicConfPath: 
   apiCompatibilityLevel: 6
   captureStartupLogs: {}
-  activeInputHandler: 1
+  activeInputHandler: 2
   windowsGamepadBackendHint: 0
-  cloudProjectId: 60c221ee-f8ec-4f79-a40a-2e8265dd1426
+  cloudProjectId: bda5968f-fd22-4fc9-a9fa-d18be02a8745
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: Tutorial Terminator
-  organizationId: samarthgupta9999
+  projectName: test_game
+  organizationId: generalsambit
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   hmiLoadingImage: {fileID: 0}
