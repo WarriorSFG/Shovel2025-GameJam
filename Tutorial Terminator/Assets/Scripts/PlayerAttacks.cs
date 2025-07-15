@@ -26,7 +26,7 @@ public class PlayerAttacks : MonoBehaviour
     }
     IEnumerator Attack()
     {
-        anim.Play("Attack");
+        anim.SetTrigger("attack");
 
         // Wait until animator switches to Attack state
         while (!anim.GetCurrentAnimatorStateInfo(0).IsName("Attack"))

@@ -80,7 +80,7 @@ public class PlayerMovement : MonoBehaviour
         {
             if (horizontalInput == 0)
             {
-                body.linearVelocity = new Vector2(-Mathf.Sign(transform.localScale.x) * jumpPower, 0);
+                body.linearVelocity = new Vector2(-Mathf.Sign(transform.localScale.x) * jumpPower * 1.5f, jumpPower * 3);
                 transform.localScale = new Vector3(-Mathf.Sign(transform.localScale.x) * Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
             }
             else
