@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class PlayerAttacks : MonoBehaviour
@@ -8,6 +10,7 @@ public class PlayerAttacks : MonoBehaviour
     private Animator anim;
     private PlayerMovement playerMovement;
     private float CDTimer = Mathf.Infinity;
+
     private void Awake()
     {
         anim = GetComponent<Animator>();
@@ -17,19 +20,30 @@ public class PlayerAttacks : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0) && CDTimer > attackCD && playerMovement.canAttack())
         {
-            Attack();
+            StartCoroutine(Attack());
         }
         CDTimer += Time.deltaTime;
     }
-    private void Attack()
+    IEnumerator Attack()
     {
-        anim.SetTrigger("attack");
+        anim.Play("Attack");
+
+        // Wait until animator switches to Attack state
+        while (!anim.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
+            yield return null;
+
+        // Wait for animation to complete (normalizedTime goes to a position which can fire attack)
+        while (anim.GetCurrentAnimatorStateInfo(0).normalizedTime < 0.85f)
+            yield return null;
+
         CDTimer = 0;
 
         fireballs[FindFireball()].transform.position = firePoint.position;
         fireballs[FindFireball()].GetComponent<Projectile>().SetDirection(Mathf.Sign(transform.localScale.x));
+        
 
     }
+    
     private int FindFireball()
     {
         for (int i = 0; i < fireballs.Length; i++)
