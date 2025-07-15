@@ -1,4 +1,5 @@
 using System.Runtime.CompilerServices;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem.Composites;
 
@@ -8,9 +9,10 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float speed = 10f;
     [SerializeField] private float jumpPower = 7f;
     [SerializeField] private float wallJumpPushAgainstWallForce = 3f;
-    [SerializeField] private float wallJumpUpPushForce = 6f;
+    [SerializeField] private float wallJumpUpPushForce = 20f;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private LayerMask wallLayer;
+    [SerializeField] private float wallDrag = 9.8f;
     private Rigidbody2D body;
     private CapsuleCollider2D capsuleCollider;
     private BoxCollider2D boxCollider;
@@ -52,7 +54,7 @@ public class PlayerMovement : MonoBehaviour
             body.linearVelocity = new Vector2(horizontalInput * speed, body.linearVelocity.y);
             if (onWall() && !isGrounded())
             {
-                body.gravityScale = 0;
+                body.gravityScale = wallDrag;
                 body.linearVelocity = Vector2.zero;
             }
             else
@@ -79,7 +81,7 @@ public class PlayerMovement : MonoBehaviour
             if (horizontalInput == 0)
             {
                 body.linearVelocity = new Vector2(-Mathf.Sign(transform.localScale.x) * jumpPower, 0);
-                transform.localScale = new Vector3(-Mathf.Sign(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+                transform.localScale = new Vector3(-Mathf.Sign(transform.localScale.x) * Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
             }
             else
                 body.linearVelocity = new Vector2(-Mathf.Sign(transform.localScale.x) * wallJumpPushAgainstWallForce, wallJumpUpPushForce);
