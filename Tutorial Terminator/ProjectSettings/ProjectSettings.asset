@@ -674,11 +674,11 @@ PlayerSettings:
   captureStartupLogs: {}
   activeInputHandler: 2
   windowsGamepadBackendHint: 0
-  cloudProjectId: bda5968f-fd22-4fc9-a9fa-d18be02a8745
+  cloudProjectId: 60c221ee-f8ec-4f79-a40a-2e8265dd1426
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: test_game
-  organizationId: generalsambit
+  projectName: Tutorial Terminator
+  organizationId: samarthgupta9999
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   hmiLoadingImage: {fileID: 0}
