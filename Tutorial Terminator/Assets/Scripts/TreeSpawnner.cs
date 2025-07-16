@@ -9,7 +9,8 @@ public class TreeSpawnner : MonoBehaviour
     private int current = 0;
 
     private float lastTreeX = 0f;
-    public float distanceBetweenTrees = 5f; 
+    public float distanceBetweenTrees = 5f;
+    public float Yoffset=0;
 
     void Start()
     {
@@ -27,7 +28,7 @@ public class TreeSpawnner : MonoBehaviour
 
     public void SpawnTree()
     {
-        Vector3 treePos = new Vector3(lastTreeX + distanceBetweenTrees, spawnPoint.position.y, 0);
+        Vector3 treePos = new Vector3(lastTreeX + distanceBetweenTrees, spawnPoint.position.y + Yoffset, 0);
         Instantiate(treePrefab, treePos, Quaternion.identity);
         lastTreeX += distanceBetweenTrees;
         current++;
