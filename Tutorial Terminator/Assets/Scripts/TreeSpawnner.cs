@@ -1,3 +1,4 @@
+﻿using Unity.VisualScripting;
 using UnityEngine;
 
 public class TreeSpawnner : MonoBehaviour
@@ -12,9 +13,12 @@ public class TreeSpawnner : MonoBehaviour
     public float distanceBetweenTrees = 5f;
     public float Yoffset=0;
 
+    private GameManagerL2 gameManager;
+
     void Start()
     {
         lastTreeX = spawnPoint.position.x;
+        gameManager = GetComponent<GameManagerL2>();
         SpawnTree();
     }
 
@@ -29,8 +33,24 @@ public class TreeSpawnner : MonoBehaviour
     public void SpawnTree()
     {
         Vector3 treePos = new Vector3(lastTreeX + distanceBetweenTrees, spawnPoint.position.y + Yoffset, 0);
-        Instantiate(treePrefab, treePos, Quaternion.identity);
+        GameObject newTree = Instantiate(treePrefab, treePos, Quaternion.identity);
         lastTreeX += distanceBetweenTrees;
-        current++;
+        current++; 
+        gameManager.hasCrossed.Add(false);
+
+        // Get child triggers by name
+        Transform trigger = newTree.transform.Find("Trigger");
+        Transform boundary = newTree.transform.Find("Boundary");
+
+        if (trigger != null && boundary != null && gameManager != null)
+        {
+            gameManager.Point.Add(trigger);
+            gameManager.Boundaries.Add(boundary.gameObject);
+            gameManager.hasCrossed.Add(false); // make sure hasCrossed is public in GameManagerL2
+        }
+        else
+        {
+            Debug.LogWarning("Missing 'Trigger' or 'Boundary' child in treePrefab.");
+        }
     }
 }
