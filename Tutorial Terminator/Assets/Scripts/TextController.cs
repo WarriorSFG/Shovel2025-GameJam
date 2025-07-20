@@ -18,7 +18,6 @@ public class TextController : MonoBehaviour
     }
 
     public void PushText(string text) {
-        Debug.Log(text);
         StartCoroutine(AnimateText(text));
     }
 
@@ -28,7 +27,6 @@ public class TextController : MonoBehaviour
         textbox.text = "";
         while (textbox.text.Length < text.Length)
         {
-            Debug.Log(i);
             textbox.text = text.Substring(0,i);
             i++;
             yield return new WaitForSeconds(0.1f);
