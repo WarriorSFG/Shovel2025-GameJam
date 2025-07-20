@@ -2,6 +2,7 @@ using System.Runtime.CompilerServices;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem.Composites;
+using UnityEngine.Rendering;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -13,6 +14,14 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private LayerMask wallLayer;
     [SerializeField] private float wallDrag = 9.8f;
+    [SerializeField] private bool allowCrouch = false;
+    [SerializeField] private float crouchSpeed = 5f;
+    [SerializeField] private bool allowAttack = false;
+    [SerializeField] private Transform head;
+    [SerializeField] private LayerMask obstacleLayer;
+
+    [Range(0, 1)]
+    [SerializeField] private float crouchShrink = 0.5f;
     private Rigidbody2D body;
     private CapsuleCollider2D capsuleCollider;
     private BoxCollider2D boxCollider;
@@ -20,6 +29,11 @@ public class PlayerMovement : MonoBehaviour
     private float horizontalInput;
     private PlayerAttacks playerAttacks;
 
+    private Vector2 standingSize;
+    private Vector2 standingOffset;
+    private Vector2 crouchingSize;
+    private Vector2 crouchingOffset;
+    private bool isCrouched;
     private void Awake()
     {
         body = GetComponent<Rigidbody2D>();
@@ -27,6 +41,11 @@ public class PlayerMovement : MonoBehaviour
         capsuleCollider = GetComponent<CapsuleCollider2D>();
         boxCollider = GetComponent<BoxCollider2D>();
         playerAttacks = GetComponent<PlayerAttacks>();
+        standingSize = capsuleCollider.size;
+        standingOffset = capsuleCollider.offset;
+
+        crouchingSize = new Vector2(standingSize.x, standingSize.y * crouchShrink);
+        crouchingOffset = new Vector2(standingOffset.x, standingOffset.y - (standingSize.y - crouchingSize.y) * crouchShrink);
     }
 
     private void Update()
@@ -47,11 +66,12 @@ public class PlayerMovement : MonoBehaviour
         anim.SetBool("isRun", horizontalInput != 0);
         anim.SetBool("grounded", isGrounded());
 
+        float moveSpeed = isCrouched ? crouchSpeed : speed;
         //Wall jump logic
         if (wallJumpCooldown > 0.2f)
         {
             //player basic movement
-            body.linearVelocity = new Vector2(horizontalInput * speed, body.linearVelocity.y);
+            body.linearVelocity = new Vector2(horizontalInput * moveSpeed, body.linearVelocity.y);
             if (onWall() && !isGrounded())
             {
                 body.gravityScale = wallDrag;
@@ -67,6 +87,10 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             wallJumpCooldown += Time.deltaTime;
+        }
+        if (Input.GetKeyDown(KeyCode.C) && allowCrouch)
+        {
+            ToggleCrouch();
         }
     }
     private void Jump()
@@ -106,6 +130,38 @@ public class PlayerMovement : MonoBehaviour
     public bool canAttack()
     {
         return horizontalInput == 0 && isGrounded() && !onWall();
+    }
+
+    public bool canStand() {
+        Vector2 origin = transform.position;
+        Vector2 target = head.position; 
+
+        Vector2 direction = (target - origin).normalized;
+        float distance = Vector2.Distance(origin, target);
+
+        RaycastHit2D hit = Physics2D.Raycast(origin, direction, distance, obstacleLayer);
+        return hit.collider == null;
+    }
+
+    public void ToggleCrouch()
+    {
+        if (isCrouched)
+        {
+            if (!canStand())
+                return;
+            isCrouched = false;
+            Debug.Log("Stood up");
+            capsuleCollider.size = standingSize;
+            capsuleCollider.offset = standingOffset;
+        }
+        else
+        {
+            Debug.Log("Crouched");
+            isCrouched = true;
+            capsuleCollider.size = crouchingSize;
+            capsuleCollider.offset = crouchingOffset;
+        }
+
     }
 }
 

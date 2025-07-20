@@ -14,9 +14,12 @@ public class GameManagerL1 : MonoBehaviour
     public bool canHitTutorialGuy;
     int count=0;
     int HitCount = 0;
+
+    TutorialGuyMovement moveScript;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        moveScript = TutorialGuy.GetComponent<TutorialGuyMovement>();
         StartCoroutine(StartGame());
     }
 
@@ -35,7 +38,8 @@ public class GameManagerL1 : MonoBehaviour
     {
         if (count == 0)
         {
-            gameObject.GetComponent<TextController>().PushText("WOW!");
+            moveScript.moveAroundLocation = true;
+            gameObject.GetComponent<TextController>().PushText("WOW! I will watch your career with great interest");
         }
         else if (count == 1)
         {
@@ -56,12 +60,12 @@ public class GameManagerL1 : MonoBehaviour
         else if (count >= 5)
         {
             gameObject.GetComponent<TextController>().PushText("Let's try again");
-            if(canHitTutorialGuy == false)
+            if (canHitTutorialGuy == false)
             {
                 canHitTutorialGuy = true;
             }
-            
-        }
+
+        } 
         count++;
     }
 
@@ -78,8 +82,16 @@ public class GameManagerL1 : MonoBehaviour
         else if (HitCount == 2)
         {
             gameObject.GetComponent<TextController>().PushText("OK FINE, just go to the next level...");
+            StartCoroutine(EndGame());
         }
         HitCount++;
+    }
+
+    IEnumerator EndGame()
+    {
+        Destroy(TutorialGuy);
+        yield return new WaitForSeconds(5);
+        FindAnyObjectByType<SceneLoader>().LoadNextLevel();
     }
 
     IEnumerator StartGame()

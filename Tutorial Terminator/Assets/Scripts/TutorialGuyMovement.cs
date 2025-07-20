@@ -14,6 +14,7 @@ public class TutorialGuyMovement : MonoBehaviour
     [SerializeField] private float TimeBetweenRecalculation = 0.5f;
     public Transform Location;
     public bool moveToLocation = false;
+    public bool moveAroundLocation = false;
     private Vector3 moveTo;
     private float timer;
     private float lastMoveUpdate = -5f;
@@ -31,6 +32,16 @@ public class TutorialGuyMovement : MonoBehaviour
         if (moveToLocation)
         {
             moveTo = Location.position;
+        }
+        else if (moveAroundLocation)
+        {
+            if (timer - lastMoveUpdate > TimeBetweenRecalculation)
+            {
+                float xPos = Location.position.x + Random.Range(-xOffset, xOffset);
+                float yPos = Location.position.y +  Mathf.Sin(timer) * yOffset;
+                moveTo = new Vector3(xPos, yPos, transform.position.z);
+                lastMoveUpdate = timer;
+            }
         }
         else
         {

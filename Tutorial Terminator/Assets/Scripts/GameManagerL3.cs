@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class GameManagerL3 : MonoBehaviour
 {
+    public Transform EndPosition;
     public GameObject StartBound;
     public GameObject EndBound;
     public GameObject PlayerBox;
@@ -16,7 +17,6 @@ public class GameManagerL3 : MonoBehaviour
     public Transform player;
     public Transform BoxesPosition;
     public Vector3 LastBoxPos;
-
     public bool IsHoldingBox;
     public bool IsHoldingTutorialGuy;
     public bool canPickTutGuy;
@@ -73,6 +73,19 @@ public class GameManagerL3 : MonoBehaviour
         PlayerTutorialGuy.SetActive(false);
         FallingTutorialGuy.SetActive(true);
         FallingTutorialGuy.transform.position = LastBoxPos + 2*BoxOffset;
+        
+        gameObject.GetComponent<TextController>().PushText("Alright FINE you can play the game");
+        player.position = EndPosition.position;
+        yield return new WaitForSeconds(7);
+        gameObject.GetComponent<TextController>().PushText("That's it! You've defeated the tutorial trying to stop you");
+        yield return new WaitForSeconds(3);
+        gameObject.GetComponent<TextController>().PushText("Thanks for playing");
+        yield return new WaitForSeconds(4);
+        gameObject.GetComponent<TextController>().PushText("Press any key to quit");
+        
+        yield return new WaitUntil(() => Input.anyKeyDown);
+        
+        Application.Quit();
     }
 
     void PlaceBox()
