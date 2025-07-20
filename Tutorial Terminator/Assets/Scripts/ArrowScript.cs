@@ -23,6 +23,7 @@ public class ArrowScript : MonoBehaviour
         if (FindAnyObjectByType<GameManagerL1>().canHitTutorialGuy && Vector3.Distance(gameObject.transform.position, TutorialGuy.transform.position) < 2)
         {
             FindAnyObjectByType<GameManagerL1>().HitTutorialGuy();
+            Destroy(gameObject);
         }
     }
 

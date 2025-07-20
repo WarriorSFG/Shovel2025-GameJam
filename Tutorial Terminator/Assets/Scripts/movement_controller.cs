@@ -42,7 +42,7 @@ public class movement_controller : MonoBehaviour
         {
             Jump();
         }
-        if (Input.GetKeyDown(KeyCode.S) && is_grounded)
+        if (Input.GetKeyDown(KeyCode.C) && is_grounded)
         {
             handleCrouch(); 
         }
